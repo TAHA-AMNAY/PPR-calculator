@@ -13,7 +13,7 @@ col1, col2 = st.columns(2)
 with col1:
     points_pledged = st.number_input("📍 Points You Pledged", min_value=1000)
     virtual_price = st.number_input("💵 $VIRTUAL Price at Launch (USD)", value=2.0)
-    total_token_supply_m = 1000000000
+    total_token_supply_m = st.number_input("📦 Total Token Supply (in Millions)", value=1000)
 
 with col2:
     total_points_pool_m = st.number_input("🌐 Total Points Pledged by Everyone (in Millions)", value=250)
