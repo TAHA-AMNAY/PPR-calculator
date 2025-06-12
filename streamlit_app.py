@@ -98,8 +98,8 @@ st.markdown("### 🧾 What each input means:")
 
 st.markdown("""
 - Points You Pledged: Points you spent in this Genesis round. More points = more $VIRTUAL you can commit.
-- $VIRTUAL Committed: The amount of $VIRTUAL you're spending to buy the token.
-- $VIRTUAL Price: Price per $VIRTUAL token (usually around $2).
+- Virtuals Committed: The amount of $VIRTUAL you're spending to buy the token.
+- Virtuals Price: Price per $VIRTUAL token (usually around $2).
 - Total Points by Everyone: The total points pledged across all wallets — shown on the launch page.
 - Total Token Supply: The full supply of the token in millions. Used to estimate token price.
 - Estimated FDV: The price the market might value the token at post-launch, in millions.
