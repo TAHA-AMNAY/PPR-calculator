@@ -12,7 +12,8 @@ st.header("📜 Input Parameters")
 col1, col2 = st.columns(2)
 with col1:
     points_pledged = st.number_input("📍 Points You Pledged", min_value=1000)
-    virtual_committed = st.number_input("💸 $VIRTUAL Committed", min_value=0.0)
+virtual_committed = (points_pledged / total_points_pool) * 42425
+st.info(f"🧮 Based on your points, you can commit: `{virtual_committed:.4f}` VIRTUALs")
     virtual_price = st.number_input("💵 $VIRTUAL Price at Launch (USD)", value=2.0)
 with col2:
     total_points_pool_m = st.number_input("🌐 Total Points Pledged by Everyone (in Millions)", value=250)
