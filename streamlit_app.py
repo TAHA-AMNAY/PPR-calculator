@@ -18,7 +18,7 @@ with col2:
     total_points_pool_m = st.number_input("🌐 Total Points Pledged by Everyone (in Millions)", value=250)
     total_token_supply_m = st.number_input("📦 Total Token Supply (in Millions)", value=1000)
     estimated_fdv_m = st.number_input("📋 Estimated FDV (USD, in Millions)", value=20)
-    total_virtuals_committed = st.number_input("📈 Total VIRTUALs Committed by Everyone", value=42,425.0)
+    total_virtuals_committed = st.number_input("📈 Total VIRTUALs Committed by Everyone", value=42425.0)
 
 # --- Scale Values ---
 total_points_pool = total_points_pool_m * 1_000_000
