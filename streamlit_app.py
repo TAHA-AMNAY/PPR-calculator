@@ -24,15 +24,18 @@ total_token_supply = total_token_supply_m * 1_000_000
 estimated_fdv = estimated_fdv_m * 1_000_000
 total_virtuals_committed = 42425.0
 
-# --- Auto-calculate Virtuals Committed ---
+# --- Auto-calculate VIRTUALs you can commit ---
 virtual_committed = (points_pledged / total_points_pool) * total_virtuals_committed
-st.info(f"🧮 Based on your points, you can commit: `{virtual_committed:.4f}` VIRTUALs")
 
 # --- Genesis Allocation ---
-st.markdown("---")
 genesis_allocation_pct = 0.375
 total_tokens_allocated = total_token_supply * genesis_allocation_pct
-st.info(f"📦 **Genesis Tokens Allocated (37.5%)**: `{total_tokens_allocated:,.0f}`")
+
+col_a, col_b = st.columns(2)
+with col_a:
+    st.markdown(f"🧮 **VIRTUALs You Can Commit**: `{virtual_committed:.4f}`")
+with col_b:
+    st.markdown(f"📦 **Genesis Allocation (37.5%)**: `{total_tokens_allocated:,.0f}` tokens")
 
 # --- Calculate Button ---
 st.markdown("---")
@@ -45,14 +48,19 @@ if st.button("🧮 Calculate PPR"):
     profit = estimated_value - cost
     ppr = profit / points_pledged
 
-    # Output
+    # Output as metrics
     st.success("✅ **Results**")
-    st.write(f"🪙 Token Allocation: `{your_tokens:,.2f}`")
-    st.write(f"💵 Estimated Token Price: `${estimated_token_price:.4f}`")
-    st.write(f"💰 Estimated Value of Your Tokens: `${estimated_value:,.2f}`")
-    st.write(f"🧾 Cost: `${cost:.2f}`")
-    st.write(f"📈 Estimated Profit: `${profit:,.2f}`")
-    st.write(f"🧠 **PPR (USD per Point)**: `{ppr:.4f}`")
+
+    col1, col2, col3 = st.columns(3)
+    with col1:
+        st.metric("🪙 Token Allocation", f"{your_tokens:,.2f}")
+        st.metric("🧾 Cost", f"${cost:.2f}")
+    with col2:
+        st.metric("💵 Token Price", f"${estimated_token_price:.4f}")
+        st.metric("📈 Profit", f"${profit:,.2f}")
+    with col3:
+        st.metric("💰 Estimated Value", f"${estimated_value:,.2f}")
+        st.metric("🧠 PPR", f"{ppr:.4f} USD/pt")
 
 # --- Footer + PPR Explanation ---
 st.markdown("---")
