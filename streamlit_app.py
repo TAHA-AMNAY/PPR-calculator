@@ -93,7 +93,7 @@ st.markdown("""
 - Points You Pledged: Points you spent in this Genesis round. More points = more $VIRTUAL you can commit.
 - Virtuals Committed: Now auto-calculated based on your share of the total point pool.
 - Virtuals Price: Price per VIRTUAL token. You can check on CoinGecko/CoinMarketCap.
-- Total Points by Everyone: The total points pledged across all wallets — shown on the launch page.
+- Total Points by Everyone: The total points pledged across all wallets you can find here : https://whaleintel.ai/overview.
 - Total Token Supply: The full supply of the token in millions. Used to estimate token price.
 - Estimated FDV: The price the market might value the token at post-launch, in millions.
 - Genesis Tokens Allocated: 37.5% of total supply — this is the pool you're competing for.
