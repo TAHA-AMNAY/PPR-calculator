@@ -1,151 +1,68 @@
 import streamlit as st
-import pandas as pd
-import math
-from pathlib import Path
 
-# Set the title and favicon that appear in the Browser's tab bar.
-st.set_page_config(
-    page_title='GDP dashboard',
-    page_icon=':earth_americas:', # This is an emoji shortcode. Could be a URL too.
-)
+# --- Page Setup ---
+st.set_page_config(page_title="Virtuals PPR Estimator", page_icon="🧠")
 
-# -----------------------------------------------------------------------------
-# Declare some useful functions.
+st.title("🧠 Virtuals Genesis PPR Estimator")
+st.markdown("Estimate your **Points-to-Profit Ratio (PPR)** before committing to a Genesis launch on @virtuals_io.")
 
-@st.cache_data
-def get_gdp_data():
-    """Grab GDP data from a CSV file.
+# --- Input Section ---
+st.header("📝 Input Parameters")
 
-    This uses caching to avoid having to read the file every time. If we were
-    reading from an HTTP endpoint instead of a file, it's a good idea to set
-    a maximum age to the cache with the TTL argument: @st.cache_data(ttl='1d')
-    """
+col1, col2 = st.columns(2)
+with col1:
+    points_pledged = st.number_input("📍 Points You Pledged", min_value=1000)
+    virtual_committed = st.number_input("💸 $VIRTUAL Committed", min_value=0.0)
+    virtual_price = st.number_input("💵 $VIRTUAL Price at Launch (USD)", value=2.0)
+with col2:
+    total_points_pool = st.number_input("🌐 Total Points Pledged by Everyone", min_value=250_000_000)
+    total_token_supply = st.number_input("📦 Total Token Supply", value=1_000_000_000)
+    estimated_fdv = st.number_input("📊 Estimated FDV (USD)", value=20_000_000)
 
-    # Instead of a CSV on disk, you could read from an HTTP endpoint here too.
-    DATA_FILENAME = Path(__file__).parent/'data/gdp_data.csv'
-    raw_gdp_df = pd.read_csv(DATA_FILENAME)
+# --- Genesis Allocation ---
+st.markdown("---")
+genesis_allocation_pct = 0.375
+total_tokens_allocated = total_token_supply * genesis_allocation_pct
+st.info(f"📦 **Genesis Tokens Allocated (37.5%)**: `{total_tokens_allocated:,.0f}`")
 
-    MIN_YEAR = 1960
-    MAX_YEAR = 2022
+# --- Calculate Button ---
+st.markdown("---")
+if st.button("🧮 Calculate PPR"):
+    # Logic
+    your_share = points_pledged / total_points_pool
+    your_tokens = total_tokens_allocated * your_share
+    estimated_token_price = estimated_fdv / total_token_supply
+    estimated_value = your_tokens * estimated_token_price
+    cost = virtual_committed * virtual_price
+    profit = estimated_value - cost
+    ppr = profit / points_pledged
 
-    # The data above has columns like:
-    # - Country Name
-    # - Country Code
-    # - [Stuff I don't care about]
-    # - GDP for 1960
-    # - GDP for 1961
-    # - GDP for 1962
-    # - ...
-    # - GDP for 2022
-    #
-    # ...but I want this instead:
-    # - Country Name
-    # - Country Code
-    # - Year
-    # - GDP
-    #
-    # So let's pivot all those year-columns into two: Year and GDP
-    gdp_df = raw_gdp_df.melt(
-        ['Country Code'],
-        [str(x) for x in range(MIN_YEAR, MAX_YEAR + 1)],
-        'Year',
-        'GDP',
-    )
+    # Output
+    st.success("✅ **Results**")
+    st.write(f"🪙 Token Allocation: `{your_tokens:,.2f}`")
+    st.write(f"💵 Estimated Token Price: `${estimated_token_price:.4f}`")
+    st.write(f"💰 Estimated Value of Your Tokens: `${estimated_value:,.2f}`")
+    st.write(f"🧾 Cost: `${cost:.2f}`")
+    st.write(f"📈 Estimated Profit: `${profit:,.2f}`")
+    st.write(f"🧠 **PPR (USD per Point)**: `{ppr:.4f}`")
 
-    # Convert years from string to integers
-    gdp_df['Year'] = pd.to_numeric(gdp_df['Year'])
+# --- Footer + PPR Explanation ---
+st.markdown("---")
+st.caption("🐸 Made by **0xHERRO** & **Bello the Frog** — farm smarter, not louder.")
 
-    return gdp_df
+st.markdown("### ℹ️ What is PPR?")
+st.markdown("**PPR (Points-to-Profit Ratio)** tells you how much profit you made for each Genesis Point you pledged.")
 
-gdp_df = get_gdp_data()
+st.latex(r"""
+\text{Estimated Profit} = (\text{Your Tokens} \times \text{Token Price}) - (\text{\$VIRTUAL Committed} \times \text{VIRTUAL Price})
+""")
 
-# -----------------------------------------------------------------------------
-# Draw the actual page
+st.latex(r"""
+\text{PPR} = \frac{\text{Estimated Profit}}{\text{Points Pledged}}
+""")
 
-# Set the title that appears at the top of the page.
-'''
-# :earth_americas: GDP dashboard
+st.markdown("""
+The higher your PPR, the more efficient your points were in generating real returns.
 
-Browse GDP data from the [World Bank Open Data](https://data.worldbank.org/) website. As you'll
-notice, the data only goes to 2022 right now, and datapoints for certain years are often missing.
-But it's otherwise a great (and did I mention _free_?) source of data.
-'''
-
-# Add some spacing
-''
-''
-
-min_value = gdp_df['Year'].min()
-max_value = gdp_df['Year'].max()
-
-from_year, to_year = st.slider(
-    'Which years are you interested in?',
-    min_value=min_value,
-    max_value=max_value,
-    value=[min_value, max_value])
-
-countries = gdp_df['Country Code'].unique()
-
-if not len(countries):
-    st.warning("Select at least one country")
-
-selected_countries = st.multiselect(
-    'Which countries would you like to view?',
-    countries,
-    ['DEU', 'FRA', 'GBR', 'BRA', 'MEX', 'JPN'])
-
-''
-''
-''
-
-# Filter the data
-filtered_gdp_df = gdp_df[
-    (gdp_df['Country Code'].isin(selected_countries))
-    & (gdp_df['Year'] <= to_year)
-    & (from_year <= gdp_df['Year'])
-]
-
-st.header('GDP over time', divider='gray')
-
-''
-
-st.line_chart(
-    filtered_gdp_df,
-    x='Year',
-    y='GDP',
-    color='Country Code',
-)
-
-''
-''
-
-
-first_year = gdp_df[gdp_df['Year'] == from_year]
-last_year = gdp_df[gdp_df['Year'] == to_year]
-
-st.header(f'GDP in {to_year}', divider='gray')
-
-''
-
-cols = st.columns(4)
-
-for i, country in enumerate(selected_countries):
-    col = cols[i % len(cols)]
-
-    with col:
-        first_gdp = first_year[first_year['Country Code'] == country]['GDP'].iat[0] / 1000000000
-        last_gdp = last_year[last_year['Country Code'] == country]['GDP'].iat[0] / 1000000000
-
-        if math.isnan(first_gdp):
-            growth = 'n/a'
-            delta_color = 'off'
-        else:
-            growth = f'{last_gdp / first_gdp:,.2f}x'
-            delta_color = 'normal'
-
-        st.metric(
-            label=f'{country} GDP',
-            value=f'{last_gdp:,.0f}B',
-            delta=growth,
-            delta_color=delta_color
-        )
+Use it to compare Genesis launches and avoid wasting points on overhyped, low-yield opportunities.
+""")
