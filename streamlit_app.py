@@ -15,9 +15,14 @@ with col1:
     virtual_committed = st.number_input("💸 $VIRTUAL Committed", min_value=0.0)
     virtual_price = st.number_input("💵 $VIRTUAL Price at Launch (USD)", value=2.0)
 with col2:
-    total_points_pool = st.number_input("🌐 Total Points Pledged by Everyone", min_value=250_000_000)
-    total_token_supply = st.number_input("📦 Total Token Supply", value=1_000_000_000)
-    estimated_fdv = st.number_input("📊 Estimated FDV (USD)", value=20_000_000)
+    total_points_pool_m = st.number_input("🌐 Total Points Pledged by Everyone (in Millions)", value=250)
+    total_token_supply_m = st.number_input("📦 Total Token Supply (in Millions)", value=1000)
+    estimated_fdv_m = st.number_input("📊 Estimated FDV (USD, in Millions)", value=20)
+
+# --- Scale Values ---
+total_points_pool = total_points_pool_m * 1_000_000
+total_token_supply = total_token_supply_m * 1_000_000
+estimated_fdv = estimated_fdv_m * 1_000_000
 
 # --- Genesis Allocation ---
 st.markdown("---")
@@ -28,7 +33,6 @@ st.info(f"📦 **Genesis Tokens Allocated (37.5%)**: `{total_tokens_allocated:,.
 # --- Calculate Button ---
 st.markdown("---")
 if st.button("🧮 Calculate PPR"):
-    # Logic
     your_share = points_pledged / total_points_pool
     your_tokens = total_tokens_allocated * your_share
     estimated_token_price = estimated_fdv / total_token_supply
