@@ -71,27 +71,6 @@ The higher your PPR, the more efficient your points were in generating real retu
 Use it to compare Genesis launches and avoid wasting points on overhyped, low-yield opportunities.
 """)
 
-# --- Footer + PPR Explanation ---
-st.markdown("---")
-st.caption("🐸 Made by **0xHERRO** & **Bello the Frog** — farm smarter, not louder.")
-
-st.markdown("### ℹ️ What is PPR?")
-st.markdown("**PPR (Points-to-Profit Ratio)** tells you how much profit you made for each Genesis Point you pledged.")
-
-st.latex(r"""
-\text{Estimated Profit} = (\text{Your Tokens} \times \text{Token Price}) - (\text{\$VIRTUAL Committed} \times \text{VIRTUAL Price})
-""")
-
-st.latex(r"""
-\text{PPR} = \frac{\text{Estimated Profit}}{\text{Points Pledged}}
-""")
-
-st.markdown("""
-The higher your PPR, the more efficient your points were in generating real returns.
-
-Use it to compare Genesis launches and avoid wasting points on overhyped, low-yield opportunities.
-""")
-
 # --- New: Field Explanation ---
 st.markdown("---")
 st.markdown("### 🧾 What each input means:")
