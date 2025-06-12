@@ -3,7 +3,11 @@ import streamlit as st
 # --- Page Setup ---
 st.set_page_config(page_title="Virtuals PPR Estimator", page_icon="🧠")
 
-st.title("🧠 Virtuals
+st.title("🧠 Virtuals Genesis PPR Estimator")
+st.markdown("Estimate your **Points-to-Profit Ratio (PPR)** before committing to a Genesis launch on @virtuals_io.")
+
+# --- Input Section ---
+st.header("📝 Input Parameters")
 
 col1, col2 = st.columns(2)
 with col1:
