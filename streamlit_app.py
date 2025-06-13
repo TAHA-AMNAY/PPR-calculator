@@ -17,8 +17,7 @@ with col1:
 
 with col2:
     total_points_pool_m = st.number_input("🌐 Total Points Pledged by Everyone (in Millions)", value=250)
-
-estimated_fdv_m = st.number_input("📊 Estimated FDV (USD, in Millions)", value=20.0, step=0.1)
+    estimated_fdv_m = st.number_input("📊 Estimated FDV (USD, in Millions)", value=20.0, step=0.1)
 
 # --- Scale Values ---
 total_points_pool = total_points_pool_m * 1_000_000
